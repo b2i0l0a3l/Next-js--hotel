@@ -1,0 +1,92 @@
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+} 
+
+model Hotel{
+  id String @id @default(uuid())
+  userId String
+  title String @db.Text
+  description String @db.Text
+  images String[]
+  country String
+  state String
+  city String
+  locationDescription String @db.Text
+  gym Boolean  @default(false)
+  pool Boolean @default(false) 
+  spa Boolean @default(false) 
+  sauna Boolean @default(false) 
+  freeWifi Boolean @default(false)  
+  airConditioning Boolean @default(false) 
+  tv Boolean @default(false) 
+  restaurant Boolean @default(false) 
+  bar Boolean @default(false) 
+  roomService Boolean @default(false) 
+  parking Boolean @default(false) 
+  isFeatured Boolean @default(false) 
+  coffeeShop Boolean @default(false) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  room Room[]
+  booking Booking[]
+}
+
+model Room{
+  id String @id @default(uuid())
+  title String 
+  description String @db.Text
+  bedCount Int @default(0)
+  guestCount Int @default(0)
+  bathRoomCount Int @default(0)
+  kingBed Int @default(0)
+  queenBen Int @default(0)
+  image String 
+  breakFastPrice Int 
+  roomPrice Int
+  cityView Boolean @default(false) 
+  roomView Boolean @default(false) 
+  mountainView Boolean @default(false) 
+  airCondition Boolean @default(false) 
+  soundProof Boolean @default(false) 
+  balcony Boolean @default(false) 
+  privateBatroom Boolean @default(false) 
+  hotelId String
+
+  hotel Hotel? @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  Booking Booking[]
+
+} 
+
+model Booking{
+  id String @id @default(uuid())
+  username String 
+  userId String 
+  roomId String 
+  hotelownerId String
+  startDate DateTime
+  endDate DateTime
+  breakFastInclude Boolean @default(false)  
+  currency String
+  totalPrice Int
+  paymentStatus Boolean @default(false)
+  paymentIntentId String
+  bookedAt DateTime @default(now())
+  hotelId String
+
+  hotel Hotel? @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  room Room? @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+
+
+  @@index([hotelId])
+  @@index([roomId])
+}
