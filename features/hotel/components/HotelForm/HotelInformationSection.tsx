@@ -1,14 +1,13 @@
 import { Input } from "@/components/ui/input";
 import { FormFieldWrapper } from "@/components/shared/FormFieldWrapper";
 import { Textarea } from "@/components/ui/textarea";
-import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import { Field } from "./formFields";
-import { FormDescription, FormField, FormLabel, FormItem, FormControl } from "@/components/ui/form";
+import { FormDescription, FormLabel } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
-
-interface HotelInformationSectionProps {
-  form: any;
-}
+import { UploadButton } from "@/lib/uploadthing";
+import { useState } from "react";
+import { HotelWithRooms } from "../../type/HotelWithRooms";
+ 
 
 
 export const fields: Field[] = [
@@ -95,12 +94,14 @@ const amenitiesFields:Field[] = [
   },
 ];
  
-export default function HotelInformationSection({form}: HotelInformationSectionProps){
+export default function HotelInformationSection({form, hotel}: {form: any, hotel: HotelWithRooms | null}){
+  const [imageUrl, setImageUrl] = useState<string | undefined>(hotel?.images?.[0]);
   return(
     <>
     {fields.map((field) => (
       <FormFieldWrapper
             control={form.control}
+            key={field.name}
             name={field.name}
             label={field.label}
             description={field.description}
@@ -115,6 +116,7 @@ export default function HotelInformationSection({form}: HotelInformationSectionP
       <div className="grid grid-cols-2 gap-4 mt-2">
         {amenitiesFields.map((field) => (
           <FormFieldWrapper
+            key={field.name}
             control={form.control}
             name={field.name}
             label={field.label}
@@ -125,6 +127,26 @@ export default function HotelInformationSection({form}: HotelInformationSectionP
         ))}
        
       </div>
+      <FormFieldWrapper
+            control={form.control}
+            name="images"
+            label="Hotel Image"
+            description="Please upload your hotel image"
+          > 
+            {(formField) => imageUrl ? <></> :
+            <div className="flex flex-col items-center max-w-[4000px] p-12 border-2 border-dashed border-primary/50 rouded mt-4">
+                <UploadButton 
+                endpoint={"imageUploader"}
+                onClientUploadComplete={(res) => {
+                          setImageUrl(res?.[0]?.url)
+                        }}
+                        onUploadError={(error: Error) => {
+                          console.error("Upload error:", error);
+                        }}
+                />
+            </div>
+            }
+      </FormFieldWrapper>
     </div>
     </>
   ) ;

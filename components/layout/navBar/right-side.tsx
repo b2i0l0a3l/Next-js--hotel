@@ -9,8 +9,8 @@ export const RightSide = () => {
   const { userId } = useAuth();
   const { handleNavigation } = useHandleNavigation();
   return (
-    <div className="flex items-center gap-3">
-      <div>
+    <div className="flex items-center gap-3 shrink-0">
+      <div className="flex items-center gap-1">
         <ModeToggle />
         <NavMenu />
       </div>
