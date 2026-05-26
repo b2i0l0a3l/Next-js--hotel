@@ -9,7 +9,7 @@ export const LeftSide = () => {
       className="flex items-center gap-1 cursor-pointer"
       onClick={() => handleNavigation("/")}
     >
-      <Image src="/logo.svg" alt="Logo" width={50} height={50} />
+      <Image loading="eager" src="/logo.svg" alt="Logo" width={50} height={50} />
       <div className="text-xl font-bold">Hotel</div>
     </div>
   );
