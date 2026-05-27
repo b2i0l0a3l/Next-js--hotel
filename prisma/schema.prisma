@@ -36,6 +36,8 @@ model Hotel{
   updatedAt DateTime @updatedAt
   room Room[]
   booking Booking[]
+
+  @@index([userId])
 }
 
 model Room{

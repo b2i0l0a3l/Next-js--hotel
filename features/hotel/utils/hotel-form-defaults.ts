@@ -1,7 +1,7 @@
 export const defaultHotelValues = {
   title: "",
   description: "",
-  images: "",
+  images: [],
   country: "",
   state: "",
   city: "",

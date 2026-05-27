@@ -1,31 +1,32 @@
-import {Country , State , City} from "country-state-city";
-import { getAllStates } from "country-state-city/lib/state";
+import { Country, State, City } from "country-state-city";
+import { useCallback } from "react";
+
 export default function useLocation() {
+    const getCountrtyByCode = useCallback((countryCode: string) => {
+        return Country.getAllCountries().find((country) => country.isoCode === countryCode);
+    }, []);
 
-    const getCountrtyByCode = (countryCode:string) =>{
-        return Country.getAllCountries().find((country)=>country.isoCode === countryCode);
-    }
-
-    const getStatesByCountry = (countryCode:string) =>{
-        const state =  State.getStatesOfCountry(countryCode).find((state)=>state.countryCode === countryCode);
-        if(!state){
+    const getStatesByCountry = useCallback((countryCode: string) => {
+        const state = State.getStatesOfCountry(countryCode).find((state) => state.countryCode === countryCode);
+        if (!state) {
             return null;
         }
         return state; 
-    }
-    const getCountryStates = (countryCode:string) => {
+    }, []);
+
+    const getCountryStates = useCallback((countryCode: string) => {
         return State.getStatesOfCountry(countryCode);
-    } 
-    const getStateCities = (countryCode:string,stateCode?:string) => {
-        return City.getAllCities().filter((city)=>city.countryCode === countryCode && city.stateCode === stateCode);
-    } 
+    }, []); 
+
+    const getStateCities = useCallback((countryCode: string, stateCode?: string) => {
+        return City.getAllCities().filter((city) => city.countryCode === countryCode && city.stateCode === stateCode);
+    }, []); 
+
     return {
-        getAllCountry : Country.getAllCountries,
+        getAllCountry: Country.getAllCountries,
         getCountryStates,
         getStateCities,
         getCountrtyByCode,
         getStatesByCountry,
-    }
-
-
+    };
 } 

@@ -6,113 +6,114 @@ import { FormDescription, FormLabel } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HotelWithRooms } from "../../type/HotelWithRooms";
 import UploadImage from "./uploadImage";
+import { HotelFormType, HotelFormValues } from "../../type/HotelFormType";
 
-export const fields: Field[] = [
+export const fields: Field<HotelFormValues, any>[] = [
   {
     name: "title",
     label: "Hotel Title",
     description: "Please enter your hotel name",
-    type: (field: any) => <Input placeholder="Beach Hotel" {...field} />,
+    type: (field) => <Input placeholder="Beach Hotel" {...field} />,
   },
   {
     name: "description",
     label: "Hotel Description",
     description: "Please enter your hotel description",
-    type: (field: any) => (
+    type: (field) => (
       <Textarea placeholder="Beach Hotel with great views" {...field} />
     ),
   },
 ];
 
-const amenitiesFields: Field[] = [
+const amenitiesFields: Field<HotelFormValues, any>[] = [
   {
     name: "gym",
     label: "Gym",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "pool",
     label: "Pool",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "spa",
     label: "Spa",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "sauna",
     label: "Sauna",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "freeWifi",
     label: "Free Wifi",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "airConditioning",
     label: "Air Conditioning",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "tv",
     label: "TV",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "restaurant",
     label: "Restaurant",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "bar",
     label: "Bar",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "roomService",
     label: "Room Service",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "parking",
     label: "Parking",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "isFeatured",
     label: "Is Featured",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
   {
     name: "coffeeShop",
     label: "Coffee Shop",
-    type: (field: any) => (
+    type: (field) => (
       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
     ),
   },
@@ -122,7 +123,7 @@ export default function HotelInformationSection({
   form,
   hotel,
 }: {
-  form: any;
+  form: HotelFormType;
   hotel: HotelWithRooms | null;
 }) {
 
@@ -136,7 +137,7 @@ export default function HotelInformationSection({
   );
 }
 
-function getFields(form: any) {
+function getFields(form: HotelFormType) {
   return (
     <div>
       {fields.map((field) => (
@@ -154,7 +155,7 @@ function getFields(form: any) {
   );
 }
 
-function getAmenities(form: any){
+function getAmenities(form: HotelFormType){
   return (
     <>
      <FormLabel>Choose Amenities</FormLabel>

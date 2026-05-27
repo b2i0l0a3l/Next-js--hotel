@@ -4,43 +4,41 @@ import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { HotelFormType } from "../../type/HotelFormType";
 
-
-
-
-
-export default function Location({form}: {form: any}) {
-    const {getCountryStates , getStateCities ,getAllCountry} = useLocation();
-    const [states,setStates] = useState<IState[]>([]);
-    const [cities,setCities] = useState<ICity[]>([]);
-    const [isLoading,setIsLoading] = useState(false);
+export default function Location({ form }: { form: HotelFormType }) {
+    const { getCountryStates , getStateCities , getAllCountry } = useLocation();
+    const [states, setStates] = useState<IState[]>([]);
+    const [cities, setCities] = useState<ICity[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
     const Countries = getAllCountry(); 
     
-    useEffect(()=>{
-        const selectedCountry = form.watch("country");
-        
-        if(selectedCountry){
+   const selectedCountry = form.watch("country");
+    const selectedState = form.watch("state");
+    
+    useEffect(() => {
+        if (selectedCountry) {
             const countryStates = getCountryStates(selectedCountry);
             setStates(countryStates);
+        } else {
+            setStates([]);
         }
-    },[form.watch("country")]);
-
-    useEffect(()=>{
-        const selectedCountry = form.watch("country");
-        const selectedState = form.watch("state");
-        
-        if(selectedState){
-            const stateCities = getStateCities(selectedCountry,selectedState);
+    }, [selectedCountry, getCountryStates]);
+    
+    useEffect(() => {
+        if (selectedCountry && selectedState) {
+            const stateCities = getStateCities(selectedCountry, selectedState);
             setCities(stateCities);
+        } else {
+            setCities([]);
         }
-    },[form.watch("country"),form.watch("state")]);
+    }, [selectedCountry, selectedState, getStateCities]);
  
     return(
         <>
@@ -65,7 +63,7 @@ export default function Location({form}: {form: any}) {
                                 ))}
                             </SelectContent>
                         </Select>
-
+                        <FormMessage/>
                       </FormItem>
                     )}
                 />
@@ -91,7 +89,7 @@ export default function Location({form}: {form: any}) {
                                 ))}
                             </SelectContent>
                         </Select>
-
+                        <FormMessage/>
                       </FormItem>
                     )}
                 />
@@ -115,14 +113,14 @@ export default function Location({form}: {form: any}) {
                                 ))}
                             </SelectContent>
                         </Select>
-
+                        <FormMessage/>
                       </FormItem>
                     )}
                 />
 
             <FormField
                 control={form.control}
-                name="LocationDescription"
+                name="locationDescription"
                 render={({field})=>( <FormItem>
                     <FormLabel>Location Description *</FormLabel>
                     <FormDescription>Describe the location of your hotel</FormDescription>

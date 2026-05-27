@@ -1,6 +1,6 @@
 "use client";
 import { FormFieldWrapper } from "@/components/shared/FormFieldWrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HotelWithRooms } from "../../type/HotelWithRooms";
 import { UploadButton } from "@/lib/uploadthing";
 import { toast } from "sonner";
@@ -8,27 +8,36 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Loader2, XCircle } from "lucide-react";
 import axios from "axios";
+import { HotelFormType } from "../../type/HotelFormType";
 
 export default function UploadImage({
   form,
   hotel,
 }: {
-  form: any;
+  form: HotelFormType;
   hotel: HotelWithRooms | null;
 }) {
-  
   const [imageUrl, setImageUrl] = useState<string | undefined>(
     hotel?.images?.[0],
   );
+  
+  useEffect(()=>{
+    if(imageUrl){
+      form.setValue('images',[imageUrl],{shouldValidate:true,shouldDirty:true,shouldTouch:true})
+    } else {
+      form.setValue('images',[],{shouldValidate:true,shouldDirty:true,shouldTouch:true})
+    }
+  },[imageUrl])
+  
   const [isImageDeleting, setIsImageDeleting] = useState(false);
    
-  const handleDeleteImage = async (image:String) => {
+  const handleDeleteImage = async (image: string) => {
     try { 
       setIsImageDeleting(true);
       const imageId = image.slice(image.lastIndexOf("/") + 1);
       await axios.post(`/api/uploadthing/delete`, { ImageKey: imageId }).then((res)=>{
         setImageUrl("");
-        form.setValue("images", "");
+        form.setValue("images", []);
         toast.success("Image deleted successfully");
       }).catch((error)=>{
         toast.error("Failed to delete image");
