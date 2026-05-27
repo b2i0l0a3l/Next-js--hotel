@@ -9,9 +9,15 @@ export async function POST(req: Request) {
     if (!userId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const {ImageKey} = await req.json(); 
+    const body = await req.json(); 
+    const fileKeys = body.imageKeys || body.ImageKey;
+
+    if (!fileKeys || (Array.isArray(fileKeys) && fileKeys.length === 0)) {
+        return NextResponse.json({ error: "No image keys provided" }, { status: 400 });
+    }
+
     try {
-        const res = await utapi.deleteFiles(ImageKey);
+        const res = await utapi.deleteFiles(fileKeys);
         return NextResponse.json(res);
     } catch (error) {
         console.log(error);

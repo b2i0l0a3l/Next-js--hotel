@@ -7,12 +7,19 @@ import { Form } from "@/components/ui/form";
 import { defaultHotelValues } from "../../utils/hotel-form-defaults";
 import HotelInformationSection from "./HotelInformationSection";
 import Location from "./Location";
-import AddUpdateButton from "./addUpadateButton";
+import FormSubmitButton from "./FormSubmitButton";
 import axios from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 import { HotelFormValues } from "../../type/HotelFormType";
+import getImageKey from "@/lib/getImageKey";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert"
+import { Terminal } from "lucide-react";
 
 export interface AddHotelFormProps {
   hotel: HotelWithRooms | null;
@@ -47,13 +54,16 @@ export default function AddHotelForm({ hotel }: AddHotelFormProps) {
   const form = useZodForm(hotelSchema, defaultValues);
   const { handleNavigation } = useHandleNavigation();
   const [isLoading, setIsLoading] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
  
   async function onSubmit(values: HotelFormValues) {
     try {
       setIsLoading(true);
-      if (hotel) {
-        toast.info("Hotel update logic is not implemented yet");
-      } else {
+      if (hotel) { 
+        const res = await axios.patch(`/api/hotel/${hotel.id}`, values);
+        toast.success("Hotel updated successfully");
+        handleNavigation(`/hotel/${res.data.id}`);
+      } else {  
         const res = await axios.post("/api/hotel", values);
         toast.success("Hotel created successfully");
         handleNavigation(`/hotel/${res.data.id}`);
@@ -65,6 +75,29 @@ export default function AddHotelForm({ hotel }: AddHotelFormProps) {
       setIsLoading(false);
     }
   }
+
+  const handleDelete = async (hotel: HotelWithRooms) => {
+    setIsDelete(true);
+    if(!hotel){
+      toast.error("Hotel not found");
+      return;
+    }
+    const imageKeys = hotel.images.map((image) => getImageKey(image));
+   try{
+    if(imageKeys.length > 0){
+      await axios.post(`/api/uploadthing/delete`, { imageKeys });
+    }  
+    await axios.delete(`/api/hotel/${hotel.id}`);
+    toast.success("Hotel deleted successfully");
+    handleNavigation("/hotel/new");
+   }catch(error){
+    console.error("Failed to delete images", error);
+    toast.error("Failed to delete images");
+    return;
+   }finally{
+    setIsDelete(false);
+   }
+  };
    
   return (
     <div>
@@ -77,7 +110,19 @@ export default function AddHotelForm({ hotel }: AddHotelFormProps) {
             </div>
             <div className="flex-1 flex flex-col gap-6">
               <Location form={form} />
-              <AddUpdateButton hotel={hotel} isLoading={isLoading} />
+              {hotel && !hotel.room.length && (  
+                <Alert className="bg-indigo-600 text-white">
+                  <Terminal className="h-4 w-4 stroke-white" />
+                  <AlertTitle>One last step!</AlertTitle> 
+                  <AlertDescription className="space-y-4 text-white "> 
+                    your hotel created successfully  
+                    <div >but you need to add some rooms to it to be published.</div> 
+                  </AlertDescription>
+                </Alert>
+              )}
+              <div className="flex justify-between gap-2 flex-wrap">
+                <FormSubmitButton handleNavigation={handleNavigation} hotel={hotel} isLoading={isLoading} handleDelete={() => handleDelete(hotel!)} isDelete={isDelete}/>
+              </div>
             </div>
           </div>
         </form>
@@ -87,3 +132,4 @@ export default function AddHotelForm({ hotel }: AddHotelFormProps) {
 }
 
 
+ 

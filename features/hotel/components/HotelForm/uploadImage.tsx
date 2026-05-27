@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, XCircle } from "lucide-react";
 import axios from "axios";
 import { HotelFormType } from "../../type/HotelFormType";
+import getImageKey from "@/lib/getImageKey";
 
 export default function UploadImage({
   form,
@@ -20,7 +21,7 @@ export default function UploadImage({
   const [imageUrl, setImageUrl] = useState<string | undefined>(
     hotel?.images?.[0],
   );
-  
+   
   useEffect(()=>{
     if(imageUrl){
       form.setValue('images',[imageUrl],{shouldValidate:true,shouldDirty:true,shouldTouch:true})
@@ -34,7 +35,7 @@ export default function UploadImage({
   const handleDeleteImage = async (image: string) => {
     try { 
       setIsImageDeleting(true);
-      const imageId = image.slice(image.lastIndexOf("/") + 1);
+      const imageId = getImageKey(image);
       await axios.post(`/api/uploadthing/delete`, { ImageKey: imageId }).then((res)=>{
         setImageUrl("");
         form.setValue("images", []);

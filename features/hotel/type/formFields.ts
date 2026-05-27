@@ -7,6 +7,6 @@ export interface Field<
   name: TName;
   label: string;
   description?: string;
-  type: (field: ControllerRenderProps<TFieldValues, TName>) => React.ReactNode;
+  type : (field: ControllerRenderProps<TFieldValues, TName>) => React.ReactNode;
 }
-
+ 

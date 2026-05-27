@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { FormFieldWrapper } from "@/components/shared/FormFieldWrapper";
 import { Textarea } from "@/components/ui/textarea";
-import { Field } from "./formFields";
+import { Field } from "../../type/formFields";
 import { FormDescription, FormLabel } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HotelWithRooms } from "../../type/HotelWithRooms";
@@ -126,7 +126,6 @@ export default function HotelInformationSection({
   form: HotelFormType;
   hotel: HotelWithRooms | null;
 }) {
-
   return (
     <>
       {getFields(form)}
@@ -155,26 +154,24 @@ function getFields(form: HotelFormType) {
   );
 }
 
-function getAmenities(form: HotelFormType){
+function getAmenities(form: HotelFormType) {
   return (
     <>
-     <FormLabel>Choose Amenities</FormLabel>
-        <FormDescription>
-          Select amenities that your hotel offers
-        </FormDescription>
-        <div className="grid grid-cols-2 gap-4 mt-2">
-          {amenitiesFields.map((field) => (
-            <FormFieldWrapper
-              key={field.name}
-              control={form.control}
-              name={field.name}
-              label={field.label}
-              className="flex flex-row items-end space-x-3 rounded-md border p-4 gap-2 "
-            >
-              {(formField) => field.type(formField)}
-            </FormFieldWrapper>
-          ))}
-        </div>
+      <FormLabel>Choose Amenities</FormLabel>
+      <FormDescription>Select amenities that your hotel offers</FormDescription>
+      <div className="grid grid-cols-2 gap-4 mt-2">
+        {amenitiesFields.map((field) => (
+          <FormFieldWrapper
+            key={field.name}
+            control={form.control}
+            name={field.name}
+            label={field.label}
+            className="flex flex-row items-end space-x-3 rounded-md border p-4 gap-2 "
+          >
+            {(formField) => field.type(formField)}
+          </FormFieldWrapper>
+        ))}
+      </div>
     </>
-  )
+  );
 }

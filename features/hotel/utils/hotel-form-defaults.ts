@@ -1,4 +1,4 @@
-export const defaultHotelValues = {
+export const defaultHotelValues =  {
   title: "",
   description: "",
   images: [],

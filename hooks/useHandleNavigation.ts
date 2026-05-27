@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-enum typeRouter {
+export enum typeRouter {
   PUSH = "push",
   REPLACE = "replace",
   BACK = "back",
