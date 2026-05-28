@@ -7,6 +7,7 @@ export enum typeRouter {
   REPLACE = "replace",
   BACK = "back",
   FORWARD = "forward",
+  REFRESH = "refresh",
 }
 export const useHandleNavigation = () => {
   const router = useRouter();
@@ -14,7 +15,10 @@ export const useHandleNavigation = () => {
     url: string,
     type: typeRouter = typeRouter.PUSH,
   ) => {  
-
+    if(type === typeRouter.REFRESH){
+      router.refresh();
+      return;
+    } 
     if(!url){
         return;
     }

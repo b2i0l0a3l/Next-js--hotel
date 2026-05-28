@@ -5,7 +5,7 @@ import { Field } from "../../type/formFields";
 import { FormDescription, FormLabel } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HotelWithRooms } from "../../type/HotelWithRooms";
-import UploadImage from "./uploadImage";
+import UploadImage from "../Buttons/uploadImage";
 import { HotelFormType, HotelFormValues } from "../../type/HotelFormType";
 
 export const fields: Field<HotelFormValues, any>[] = [
@@ -131,7 +131,12 @@ export default function HotelInformationSection({
       {getFields(form)}
       {getAmenities(form)}
 
-      <UploadImage form={form} hotel={hotel} />
+      <UploadImage
+        form={form}
+        image={hotel?.images?.[0]}
+        name="images"
+        label="Hotel Image"
+      />
     </>
   );
 }

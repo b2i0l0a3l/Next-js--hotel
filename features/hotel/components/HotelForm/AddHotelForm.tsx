@@ -7,19 +7,14 @@ import { Form } from "@/components/ui/form";
 import { defaultHotelValues } from "../../utils/hotel-form-defaults";
 import HotelInformationSection from "./HotelInformationSection";
 import Location from "./Location";
-import FormSubmitButton from "./FormSubmitButton";
+import FormSubmitButton from "../Buttons/FormSubmitButton";
 import axios from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useHandleNavigation } from "@/hooks/useHandleNavigation";
 import { HotelFormValues } from "../../type/HotelFormType";
 import getImageKey from "@/lib/getImageKey";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert"
-import { Terminal } from "lucide-react";
+import FormAlert from "../FormAlert/FormAlert";
 
 export interface AddHotelFormProps {
   hotel: HotelWithRooms | null;
@@ -111,14 +106,15 @@ export default function AddHotelForm({ hotel }: AddHotelFormProps) {
             <div className="flex-1 flex flex-col gap-6">
               <Location form={form} />
               {hotel && !hotel.room.length && (  
-                <Alert className="bg-indigo-600 text-white">
-                  <Terminal className="h-4 w-4 stroke-white" />
-                  <AlertTitle>One last step!</AlertTitle> 
-                  <AlertDescription className="space-y-4 text-white "> 
-                    your hotel created successfully  
-                    <div >but you need to add some rooms to it to be published.</div> 
-                  </AlertDescription>
-                </Alert>
+                <FormAlert   
+                title="One last step!"
+                description={
+                <>
+                  your hotel created successfully  
+                  <div >but you need to add some rooms to it to be published.</div> 
+                </>
+                }
+                /> 
               )}
               <div className="flex justify-between gap-2 flex-wrap">
                 <FormSubmitButton handleNavigation={handleNavigation} hotel={hotel} isLoading={isLoading} handleDelete={() => handleDelete(hotel!)} isDelete={isDelete}/>

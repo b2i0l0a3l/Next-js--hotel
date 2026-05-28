@@ -18,5 +18,5 @@ export const roomSchema = z.object({
     soundProof: z.boolean().optional(),
     balcony: z.boolean().optional(),
     privateBatroom: z.boolean().optional(),
-    hotelId: z.coerce.string().min(1,{message:"hotelId must be at least 1"}),
+    hotelId: z.coerce.string().min(1,{message:"hotelId is required"}),
 })
