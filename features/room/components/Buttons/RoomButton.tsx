@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Loader2, Trash } from "lucide-react";
@@ -9,6 +9,11 @@ import { toast } from "sonner";
 import { Room } from "@prisma/client";
 import getImageKey from "@/lib/getImageKey";
 import { HotelWithRooms } from "../../../hotel/type/HotelWithRooms";
+import { DateRange } from "react-day-picker";
+import { DatePickerWithRange } from "../DateRangePicker/DateRangePicker";
+import { differenceInCalendarDays } from "date-fns";
+import { Checkbox } from "@/components/ui/checkbox";
+import DatePickerButton from "./DatePickerButton";
 
 export default function RoomButton({
   room,
@@ -21,6 +26,9 @@ export default function RoomButton({
   const pathname = usePathname();
   const isHotelDetailsPage = pathname.includes("hotel-details");
   const { handleNavigation } = useHandleNavigation();
+
+
+ 
   const handleRoomDelete = async () => {
     setIsLoading(true);
     const imageKey = getImageKey(room.image);
@@ -44,7 +52,7 @@ export default function RoomButton({
   return (
     <>
       {isHotelDetailsPage ? (
-        <div>hotel Details Page</div>
+        <DatePickerButton room={room} />
       ) : (
         <div className="flex w-full justify-between">
           <Button
