@@ -5,11 +5,11 @@ import { defaultRoomValues } from "../../utils/room-form-defaults";
 import { Form, FormDescription, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FormFieldWrapper } from "@/components/shared/FormFieldWrapper";
-import { RoomFormValues } from "../../type/HotelFormType";
-import { Field } from "../../type/formFields";
+import { RoomFormValues } from "../../../hotel/type/HotelFormType";
+import { Field } from "../../../hotel/type/formFields";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import UploadImage from "../Buttons/uploadImage";
+import UploadImage from "../../../hotel/components/Buttons/uploadImage";
 import RoomFormSubmitButton from "../Buttons/RoomFormSubmitButton";
 
 interface AddRoomFormProps {
@@ -172,11 +172,14 @@ export default function AddRoomForm({
   room,
   handleDialogueOpen,
 }: AddRoomFormProps) {
-  const form = useZodForm(roomSchema, {
-    ...defaultRoomValues,
-    hotelId: hotel?.id || "",
-    ...room,
-  });
+  console.log("room", room);
+  const defaultValues: RoomFormValues = room
+    ? {
+        ...room,
+        hotelId: hotel?.id || "",
+      }
+    : { ...defaultRoomValues, hotelId: hotel?.id || "" };
+  const form = useZodForm(roomSchema, defaultValues);
   return (
     <div className="max-h-[75vh] overflow-y-auto px-2">
       <Form {...form}>
@@ -248,10 +251,14 @@ export default function AddRoomForm({
               ))}
             </div>
           </div>
-            <div className="pt-4 pb-2">
-              <RoomFormSubmitButton form={form} hotel={hotel} room={room} handleDialogueOpen={handleDialogueOpen} />
-
-            </div>
+          <div className="pt-4 pb-2">
+            <RoomFormSubmitButton
+              form={form}
+              hotel={hotel}
+              room={room}
+              handleDialogueOpen={handleDialogueOpen}
+            />
+          </div>
         </form>
       </Form>
     </div>

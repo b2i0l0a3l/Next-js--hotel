@@ -5,11 +5,11 @@ import { RightSide } from "./right-side";
 
 const NavBar = () => {
   return (
-    <div className="sticky top-0 border  border-b-primary/10 bg-secondary w-full z-99999 ">
+    <div className="sticky p-3 top-0 border  border-b-primary/10 bg-secondary w-full z-10 ">
       <Container>
         <div className="flex items-center justify-between">
             <LeftSide />
-            <NavBarCenter />
+            <NavBarCenter />  
             <RightSide />
         </div> 
       </Container>

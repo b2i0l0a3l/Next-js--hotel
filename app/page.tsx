@@ -1,10 +1,29 @@
 import Link from "next/link";
 import { Show, UserButton } from "@clerk/nextjs";
+import getHotels from "@/features/hotel/actions/getHotels";
+import HotelList from "@/features/hotel/components/HotelList/HotelList";
 
-export default function Home() {
+interface HomeProps {
+  searchParams: Promise<{
+    title: string;
+    country: string;
+    state: string;
+    city: string;
+  }>;
+}
+export default async function Home({searchParams}:HomeProps) {
+  const SearchParams = await searchParams;
+  const hotels = await getHotels(SearchParams);
+  if(!hotels){
+    return (
+      <div>
+        No hotels found
+      </div>
+    );
+  }
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 via-white to-pink-50 font-sans dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900 text-zinc-900 dark:text-zinc-50 p-6">
-      
+    <div >
+      <HotelList hotels={hotels}/>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export enum typeRouter {
   PUSH = "push",
@@ -11,6 +11,8 @@ export enum typeRouter {
 }
 export const useHandleNavigation = () => {
   const router = useRouter();
+  const pathname = usePathname();
+
   const handleNavigation = (
     url: string,
     type: typeRouter = typeRouter.PUSH,
@@ -38,5 +40,9 @@ export const useHandleNavigation = () => {
     }
   };
 
-  return { handleNavigation };
+  const includePath = (path:string) => {
+    return pathname.includes(path);
+  }
+
+  return { handleNavigation , includePath };
 };
