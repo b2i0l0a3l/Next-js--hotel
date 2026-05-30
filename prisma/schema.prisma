@@ -71,6 +71,7 @@ model Booking{
   id String @id @default(uuid())
   username String 
   userId String 
+  userEmail String 
   roomId String 
   hotelownerId String
   startDate DateTime

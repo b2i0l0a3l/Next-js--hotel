@@ -9,10 +9,6 @@ import { toast } from "sonner";
 import { Room } from "@prisma/client";
 import getImageKey from "@/lib/getImageKey";
 import { HotelWithRooms } from "../../../hotel/type/HotelWithRooms";
-import { DateRange } from "react-day-picker";
-import { DatePickerWithRange } from "../DateRangePicker/DateRangePicker";
-import { differenceInCalendarDays } from "date-fns";
-import { Checkbox } from "@/components/ui/checkbox";
 import DatePickerButton from "./DatePickerButton";
 
 export default function RoomButton({
@@ -49,10 +45,11 @@ export default function RoomButton({
       setIsLoading(false);
     }
   };
+
   return (
     <>
       {isHotelDetailsPage ? (
-        <DatePickerButton room={room} />
+        <DatePickerButton room={room} hotel={hotel} />
       ) : (
         <div className="flex w-full justify-between">
           <Button
