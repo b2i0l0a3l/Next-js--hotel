@@ -30,6 +30,7 @@ export default function DatePickerButton({ room ,hotel }: { room: Room,hotel: Ho
       }
     }
   }, [date, room.roomPrice, includeBreakFast]);
+  
   return (
     <div className="flex flex-col gap-6">
       <div className="mb-2">select days that you will spend in this room</div>
@@ -50,7 +51,7 @@ export default function DatePickerButton({ room ,hotel }: { room: Room,hotel: Ho
         Total Price: <span className="font-bold">{totalPrice}</span> for{" "}
         <span className="font-bold">{day} Days</span>
       </div>
-      <BookingStripeButton  hotel={hotel} includeBreakFast={includeBreakFast} room={room} totalPrice={totalPrice} />
+      <BookingStripeButton Date={date} hotel={hotel} includeBreakFast={includeBreakFast} room={room} totalPrice={totalPrice} />
     </div>
   );
 }
