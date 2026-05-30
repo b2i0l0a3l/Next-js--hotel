@@ -40,6 +40,10 @@ export async function POST(req : Request){
     }
     else{
         const paymentIntent = await NewPayment(bookingData);
+        if(!paymentIntent) {
+            return new NextResponse("Invalid Data", {status : 400});
+        }
+
         return NextResponse.json({paymentIntent});
     }
 
@@ -69,7 +73,6 @@ async function update(pyment_intent_id: string, id : string ,totalPrice : number
 
 async function NewPayment(bookingData: any){
     const paymentIntent = await stripe.create(bookingData)
-        if(!paymentIntent) return new NextResponse("Invalid Data", {status : 400});
         bookingData.paymentIntentId = paymentIntent!.id;
         await prismadb.booking.create({data: bookingData});
     return paymentIntent;
